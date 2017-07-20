@@ -8,6 +8,7 @@ class Iris(irc.IRCClient):
 	nickname = irx.config.nickname
 	realname = irx.config.realname
 	username = irx.config.username
+	prefix   = irx.config.prefix
 
 	def __init__(self):
 		self.irx = Irx.Irx(self.sendLine, irx.config.nickname, irx.config.username, irx.config.realname)
@@ -17,7 +18,7 @@ class Iris(irc.IRCClient):
 	def connectionMade(self):
 		irc.IRCClient.connectionMade(self)
 	
-	def connectionLost(self):
+	def connectionLost(self, reason):
 		irc.IRCClient.connectionLost(self, reason)
 	
 	def signedOn(self):
@@ -30,7 +31,7 @@ class Iris(irc.IRCClient):
 		f.close()
 
 	def privmsg(self, user, channel, data):
-		if data.startswith("."):
+		if data.startswith(self.prefix):
 			self.irx.doCommand(channel, user, data)
 
 
